@@ -104,12 +104,8 @@ class PokemonList extends Array {
         // чтобы стал доступен метод push() и остальные
         super();
         
-        // Пройдемся по покемонам и добавим их -- если это действительно покемоны
+        // Пройдемся по покемонам и добавим их
         for (let pokemon of pokemons) {
-            if (!pokemon instanceof Pokemon) {
-                throw new TypeError("Один или более добавляемых объектов не Pokemon!");
-            }
-            
             this.push(pokemon);
         }
     }
@@ -122,37 +118,6 @@ class PokemonList extends Array {
      */
     add(name, level) {
         this.push(new Pokemon(name, level));
-    }
-
-    /**
-     * Вырезать из списка покемона с указанным индексом
-     * 
-     * @param {Number} [index=this.length - 1] Индекс вырезамеого покемона
-     * @returns {*}
-     */
-    cut(index = 0) {
-        if (!this.length) {
-            throw new Error('Нет покемонов для вырезания');
-        }
-        
-        index = parseInt(index);
-        
-        if (index < 0) {
-            throw new Error(`Номер вырезаемого покемона не должен быть отрицательным (указан ${index})`);
-        }
-        
-        if (index >= this.length) {
-            throw new Error(`Номер вырезаемого покемона слишком большой: ${index} из ${this.length}`);
-        }
-        
-        let pokemon = this[index];
-        
-        this.splice(index, 1);
-        
-        return pokemon;
-        
-        // Можно было сразу написать return this.splice(index, 1)[0]; без создания переменной pokemon, 
-        // только return pokemon кажется мне более понятным и легко читаемым
     }
     
     max() {
@@ -214,12 +179,14 @@ lostPokemons.forEach(
 lost.show();
 
 // Создадим "пустой" список найденных покемонов
+console.log('Список найденных покемонов:');
+
 let found = new PokemonList();
 
-console.log(found);
+found.show();
 
 // "Вырежем" одного покемона из списка потерянных
-let oneLost = lost.cut(2);
+let oneLost = lost.splice(2, 1)[0];
 
 console.log('Этот покемон нашелся:');
 oneLost.show();
