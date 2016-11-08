@@ -101,13 +101,15 @@ class PokemonList extends Array {
      */
     constructor(...pokemons) {
         // Вызовем конструктор родительского Array, 
-        // чтобы стал доступен метод push() и остальные
-        super();
-        
-        // Пройдемся по покемонам и добавим их
-        for (let pokemon of pokemons) {
-            this.push(pokemon);
-        }
+        // чтобы стал доступен метод push() и остальные;
+        // отдадим туда только "настоящих" покемонов
+        super(
+            ...(
+                pokemons.filter(
+                    (pokemon) => pokemon instanceof Pokemon
+                )
+            )
+        );
     }
 
     /**
@@ -121,7 +123,7 @@ class PokemonList extends Array {
     }
     
     max() {
-        let maxLevel = Math.max.apply(null, this);
+        let maxLevel = Math.max(...this);
         return this.find((pokemon) => pokemon.level == maxLevel);
     }
 
